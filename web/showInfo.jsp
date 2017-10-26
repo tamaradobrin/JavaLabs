@@ -1,34 +1,38 @@
 <%@ page import="java.util.Map" %>
-<%@ page import="java.util.TreeMap" %><%--
-  Created by IntelliJ IDEA.
-  User: tamid_000
-  Date: 10/16/2017
-  Time: 11:06 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="java.util.TreeMap" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="model.Country" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Show Info</title>
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+    <title>Show Countries</title>
 </head>
 <body>
-<table>
-    <thead>
-    <th>Country</th>
-    <th>Capital</th>
-    </thead>
-    <tbody>
-    <% Map<String, String> infoMap = (TreeMap<String, String>) request.getAttribute("infoMap");
-        for (String country : infoMap.keySet()) {
-    %>
-    <tr>
-        <td><% out.print(country);%></td>
-        <td><% out.print(infoMap.get(country));%></td>
-    </tr>
-    <%
-        }
-    %>
-    </tbody>
-</table>
+<div class="container">
+    <div class="page-header">
+        <h1 id="pageHeader">List of Stored Countries</h1>
+    </div>
+    <table>
+        <thead>
+        <th>Country</th>
+        <th>Capital</th>
+        </thead>
+        <tbody>
+        <% List<Country> countries = (ArrayList<Country>) request.getAttribute("countries");
+            for (Country country : countries) {
+        %>
+        <tr>
+            <td><% out.print(country.getCountryName());%></td>
+            <td><% out.print(country.getCapital());%></td>
+            <td><% out.print(country.getContinent());%></td>
+        </tr>
+        <%
+            }
+        %>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
