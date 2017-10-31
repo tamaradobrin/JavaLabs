@@ -5,7 +5,7 @@ import exception.DuplicateCountryException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Country {
+public class Country implements Comparable<Country> {
     private String countryName;
     private String capital;
     private String continent;
@@ -43,7 +43,7 @@ public class Country {
         this.continent = continent;
     }
 
-    public static List<Country> addCountry(Country newCountry, List<Country> countries) throws DuplicateCountryException{
+    public static List<Country> addCountry(Country newCountry, List<Country> countries) throws DuplicateCountryException {
         List<Country> allCountries = new ArrayList<>();
         boolean exists = false;
         if (countries == null) {
@@ -64,5 +64,11 @@ public class Country {
             }
         }
         return allCountries;
+    }
+
+    @Override
+    public int compareTo(Country country) {
+        String name = country.getCountryName();
+        return this.countryName.compareTo(name);
     }
 }

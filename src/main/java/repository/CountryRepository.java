@@ -8,8 +8,11 @@ import exception.DuplicateCountryException;
 import model.Country;
 
 import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,32 +20,7 @@ public class CountryRepository {
 
     private String csvFile = "T:/JavaLabs/L1_3/resources/countries.csv";
     private String[] header = new String[]{"countryName", "capital", "continent"};
-    public static final String COUNTRIES = "countries";
-
-    public void getCountries(){
-        BufferedReader br = null;
-        String line = "";
-        String cvsSplitBy = ",";
-        try {
-            br = new BufferedReader(new FileReader(csvFile));
-            while ((line = br.readLine()) != null) {
-                String[] country = line.split(cvsSplitBy);
-                System.out.println(country[0] + " " + country[1] + " " + country[2]);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+    private static final String COUNTRIES = "countries";
 
     public List<Country> getAllCountriesOnServer() {
         List<Country> countries = new ArrayList<>();
@@ -64,6 +42,7 @@ public class CountryRepository {
                 break;
             }
         }
+        Collections.sort(countries);
         return countries;
     }
 
@@ -100,11 +79,5 @@ public class CountryRepository {
         List<Country> countries = getAllCountriesOnSession(session);
         countries = Country.addCountry(country, countries);
         session.setAttribute(COUNTRIES, countries);
-    }
-
-    public static void main(String[] args){
-        CountryRepository repository = new CountryRepository();
-        repository.getAllCountriesOnServer();
-        repository.getCountries();
     }
 }

@@ -19,9 +19,9 @@ import java.util.Properties;
 @WebServlet(name = "StoreInfoController", urlPatterns = {"/storeInfo"})
 public class StoreInfoController extends HttpServlet {
 
-    ServletContext servletContext;
-    CountryRepository repository;
-    List<Country> countries;
+    private ServletContext servletContext;
+    private CountryRepository repository;
+    private List<Country> countries;
 
     @Override
     public void init() throws ServletException {
@@ -42,7 +42,7 @@ public class StoreInfoController extends HttpServlet {
             repository.storeCountryOnSession(country, req.getSession());
         } catch (DuplicateCountryException ex) {
             req.setAttribute("error", "The country that you tried to add already exists!");
-            req.getRequestDispatcher("/error.jsp").forward(req, resp);
+            req.getRequestDispatcher("/pages/error.jsp").forward(req, resp);
         }
         if (req.getHeader("User-Agent").equals("ServiceConsumer")) {
             ObjectOutputStream sendStream = new ObjectOutputStream(resp.getOutputStream());
@@ -67,22 +67,6 @@ public class StoreInfoController extends HttpServlet {
             countries = repository.getAllCountriesOnSession(req.getSession());
         }
         req.setAttribute("countries", countries);
-        req.getRequestDispatcher("/showInfo.jsp").forward(req, resp);
-    }
-
-    private void storeInPropertiesFile(String country, String capital) {
-        try {
-            Properties properties = new Properties();
-            File file = new File("T:/JavaLabs/Lab1/resources/infoMap.properties");
-            properties.load(new FileInputStream(file));
-            properties.setProperty(country, capital);
-            FileOutputStream fileOut = new FileOutputStream(file);
-            properties.store(fileOut, "Properties file with COUNTRIES and capitals");
-            fileOut.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        req.getRequestDispatcher("/pages/showInfo.jsp").forward(req, resp);
     }
 }
