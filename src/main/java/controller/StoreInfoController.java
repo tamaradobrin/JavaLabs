@@ -1,5 +1,6 @@
 package controller;
 
+import exception.DuplicateCountryException;
 import model.Country;
 import repository.CountryRepository;
 import util.ServletUtil;
@@ -36,9 +37,13 @@ public class StoreInfoController extends HttpServlet {
         String capital = req.getParameter("capital");
         String continent = req.getParameter("continent");
         Country country = new Country(name, capital, continent);
-        repository.storeCountryOnServer(country);
-        repository.storeCountryOnSession(country, req.getSession());
-
+        try {
+            repository.storeCountryOnServer(country);
+            repository.storeCountryOnSession(country, req.getSession());
+        } catch (DuplicateCountryException ex) {
+            req.setAttribute("error", "The country that you tried to add already exists!");
+            req.getRequestDispatcher("/error.jsp").forward(req, resp);
+        }
         if (req.getHeader("User-Agent").equals("ServiceConsumer")) {
             ObjectOutputStream sendStream = new ObjectOutputStream(resp.getOutputStream());
             sendStream.writeObject(countries);

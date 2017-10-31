@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
+import exception.DuplicateCountryException;
 import model.Country;
 
 import javax.servlet.http.HttpSession;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class CountryRepository {
 
-    private String csvFile = "T:/JavaLabs/Lab1_3/resources/countries.csv";
+    private String csvFile = "T:/JavaLabs/L1_3/resources/countries.csv";
     private String[] header = new String[]{"countryName", "capital", "continent"};
     public static final String COUNTRIES = "countries";
 
@@ -66,7 +67,7 @@ public class CountryRepository {
         return countries;
     }
 
-    public void storeCountryOnServer(Country country) {
+    public void storeCountryOnServer(Country country) throws DuplicateCountryException{
         try {
             List<Country> countries = getAllCountriesOnServer();
             countries = Country.addCountry(country, countries);
@@ -95,7 +96,7 @@ public class CountryRepository {
         return (List<Country>) session.getAttribute(COUNTRIES);
     }
 
-    public void storeCountryOnSession(Country country, HttpSession session){
+    public void storeCountryOnSession(Country country, HttpSession session) throws DuplicateCountryException{
         List<Country> countries = getAllCountriesOnSession(session);
         countries = Country.addCountry(country, countries);
         session.setAttribute(COUNTRIES, countries);

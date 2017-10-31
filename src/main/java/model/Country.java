@@ -1,5 +1,7 @@
 package model;
 
+import exception.DuplicateCountryException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class Country {
         this.continent = continent;
     }
 
-    public static List<Country> addCountry(Country newCountry, List<Country> countries) {
+    public static List<Country> addCountry(Country newCountry, List<Country> countries) throws DuplicateCountryException{
         List<Country> allCountries = new ArrayList<>();
         boolean exists = false;
         if (countries == null) {
@@ -57,6 +59,8 @@ public class Country {
             }
             if (!exists) {
                 allCountries.add(newCountry);
+            } else {
+                throw new DuplicateCountryException();
             }
         }
         return allCountries;
