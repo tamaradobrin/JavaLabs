@@ -32,7 +32,7 @@ public class StoreInfoController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletUtil.logRequestDetails(servletContext, req);
+        //ServletUtil.logRequestDetails(servletContext, req);
         String name = req.getParameter("country");
         String capital = req.getParameter("capital");
         String continent = req.getParameter("continent");
@@ -43,6 +43,7 @@ public class StoreInfoController extends HttpServlet {
         } catch (DuplicateCountryException ex) {
             req.setAttribute("error", "The country that you tried to add already exists!");
             req.getRequestDispatcher("/pages/error.jsp").forward(req, resp);
+            return;
         }
         if (req.getHeader("User-Agent").equals("ServiceConsumer")) {
             ObjectOutputStream sendStream = new ObjectOutputStream(resp.getOutputStream());
@@ -56,7 +57,7 @@ public class StoreInfoController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletUtil.logRequestDetails(servletContext, req);
+        //ServletUtil.logRequestDetails(servletContext, req);
         String storage = req.getParameter("storage");
         if(storage == null){
             storage = "server";

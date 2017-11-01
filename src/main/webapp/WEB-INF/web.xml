@@ -4,7 +4,10 @@
 
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
-
+    <filter>
+        <filter-name>DecoratorFilter</filter-name>
+        <filter-class>filter.DecoratorFilter</filter-class>
+    </filter>
     <filter>
         <filter-name>LoggedInUserFilter</filter-name>
         <filter-class>filter.LoggedInUserFilter</filter-class>
@@ -15,6 +18,18 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>LoggedInUserFilter</filter-name>
+        <url-pattern>/storeInfo</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>DecoratorFilter</filter-name>
+        <url-pattern>/login</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>DecoratorFilter</filter-name>
+        <url-pattern>/input</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>DecoratorFilter</filter-name>
         <url-pattern>/storeInfo</url-pattern>
     </filter-mapping>
 </web-app>

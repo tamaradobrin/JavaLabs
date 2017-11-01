@@ -60,6 +60,26 @@ public class CountryRepository {
         }
     }
 
+    public List<Country> getAllCountriesOnSession(HttpSession session){
+        return (List<Country>) session.getAttribute(COUNTRIES);
+    }
+
+    public void storeCountryOnSession(Country country, HttpSession session) throws DuplicateCountryException{
+        List<Country> countries = getAllCountriesOnSession(session);
+        countries = Country.addCountry(country, countries);
+        session.setAttribute(COUNTRIES, countries);
+    }
+
+    public Country getCountryByName(String countryName){
+        List<Country> allCountriesOnServer = getAllCountriesOnServer();
+        for(Country country : allCountriesOnServer){
+            if(countryName.equals(country.getCountryName())){
+                return country;
+            }
+        }
+        return null;
+    }
+
     private List<String[]> toStringArray(List<Country> countries) {
         List<String[]> records = new ArrayList<>();
         records.add(header);
@@ -69,15 +89,5 @@ public class CountryRepository {
             records.add(new String[]{country.getCountryName(), country.getCapital(), country.getContinent()});
         }
         return records;
-    }
-
-    public List<Country> getAllCountriesOnSession(HttpSession session){
-        return (List<Country>) session.getAttribute(COUNTRIES);
-    }
-
-    public void storeCountryOnSession(Country country, HttpSession session) throws DuplicateCountryException{
-        List<Country> countries = getAllCountriesOnSession(session);
-        countries = Country.addCountry(country, countries);
-        session.setAttribute(COUNTRIES, countries);
     }
 }
