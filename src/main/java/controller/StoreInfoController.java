@@ -68,6 +68,6 @@ public class StoreInfoController extends HttpServlet {
             countries = repository.getAllCountriesOnSession(req.getSession());
         }
         req.setAttribute("countries", countries);
-        req.getRequestDispatcher("/pages/showInfo.jsp").forward(req, resp);
+        req.getRequestDispatcher("/pages/showInfo1.jsp").forward(req, resp);
     }
 }
